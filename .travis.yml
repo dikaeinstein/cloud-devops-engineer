@@ -1,0 +1,27 @@
+dist: bionic
+
+env:
+  global:
+    - PLAN=plan.tfplan
+
+install:
+  - apt-get update -y
+  - apt-get install wget unzip -y
+  - wget https://releases.hashicorp.com/terraform/0.12.24/terraform_0.12.24_linux_amd64.zip
+  - unzip terraform_0.12.18_linux_amd64.zip
+  - mv terraform /usr/local/bin/
+  - terraform --version
+
+before_script:
+  - terraform init
+  - terraform validate
+
+script:
+  - terraform plan -out=$PLAN
+
+deploy:
+  provider: script
+  skip_cleanup: true
+  script: terraform apply -auto-approve $PLAN
+  on:
+    branch: master
