@@ -20,7 +20,8 @@ resource "aws_s3_bucket" "this" {
 }
 
 resource "aws_s3_bucket_policy" "this" {
-  bucket = var.bucket_name
+  depends_on = [aws_s3_bucket.this]
+  bucket     = var.bucket_name
 
   policy = templatefile(var.policy_path, {})
 }
