@@ -18,14 +18,14 @@
 #   value = module.static_site.distribution_status
 # }
 
-output "udagram_webapp_url" {
-  value = "http://${module.udagram.webapp_url}"
-}
+# output "udagram_webapp_url" {
+#   value = "http://${module.udagram.webapp_url}"
+# }
 
-output "udagram_bastion_public_ip" {
-  value = module.udagram.bastion_public_ip
-}
+# output "udagram_bastion_public_ip" {
+#   value = module.udagram.bastion_public_ip
+# }
 
-output "udagram_bastion_public_dns" {
-  value = module.udagram.bastion_public_dns
-}
+# output "udagram_bastion_public_dns" {
+#   value = module.udagram.bastion_public_dns
+# }

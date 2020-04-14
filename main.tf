@@ -2,9 +2,9 @@
 #   source = "./static-site"
 # }
 
-module "udagram" {
-  source = "./udagram"
-}
+# module "udagram" {
+#   source = "./udagram"
+# }
 
 module "s3_state_backend" {
   source = "./s3-backend"
