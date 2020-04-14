@@ -4,6 +4,18 @@ variable "create_lb" {
   default     = true
 }
 
+variable "name" {
+  description = "The resource name and Name tag of the load balancer."
+  type        = string
+  default     = null
+}
+
+variable "name_prefix" {
+  description = "The resource name prefix and Name tag of the load balancer."
+  type        = string
+  default     = null
+}
+
 variable "load_balancer_type" {
   description = "The type of load balancer to create. Possible values are application or network."
   type        = string
@@ -68,6 +80,29 @@ variable "subnet_mapping" {
   description = "A list of subnet mapping blocks describing subnets to attach to network load balancer"
   type        = list(map(string))
   default     = []
+}
+
+variable "listeners" {
+  description = "A list of maps describing the listeners for this ALB. Required key/values: port, certificate_arn. Optional key/values: ssl_policy (defaults to ELBSecurityPolicy-2016-08)"
+  type        = any
+  default     = []
+}
+
+variable "vpc_id" {
+  description = "The VPC ID where the load balancer will be deployed."
+  type        = string
+  default     = null
+}
+
+variable "target_groups" {
+  description = "A list of maps containing key/value pairs that define the target groups to be created. Order of these maps is important and the index of these are to be referenced in listener definitions. Required key/values: backend_protocol, backend_port."
+  type        = any
+  default     = []
+}
+
+variable "environment_name" {
+  description = "An environment name that will be prefixed to resource names."
+  type        = string
 }
 
 variable "tags" {

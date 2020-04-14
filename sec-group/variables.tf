@@ -10,13 +10,13 @@ variable "description" {
 
 variable "ingress_rules" {
   description = "List of ingress rules to attach to the security group."
-  type        = list(string)
+  type        = list(any)
   default     = []
 }
 
 variable "egress_rules" {
   description = "List of egress rules to attach to the security group."
-  type        = list(string)
+  type        = list(any)
   default     = []
 }
 

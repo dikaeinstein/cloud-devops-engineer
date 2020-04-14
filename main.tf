@@ -1,5 +1,9 @@
-module "static_site" {
-  source = "./static-site"
+# module "static_site" {
+#   source = "./static-site"
+# }
+
+module "udagram" {
+  source = "./udagram"
 }
 
 module "s3_state_backend" {

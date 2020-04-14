@@ -16,6 +16,7 @@ variable "instance_type" {
 variable "user_data" {
   description = "The user data to provide when launching the instance."
   type        = string
+  default     = null
 }
 
 variable "key_name" {

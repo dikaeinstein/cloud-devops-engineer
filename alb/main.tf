@@ -1,6 +1,8 @@
 resource "aws_lb" "this" {
   count = var.create_lb ? 1 : 0
 
+  name               = var.name
+  name_prefix        = var.name_prefix
   load_balancer_type = var.load_balancer_type
   internal           = var.internal
   security_groups    = var.security_groups
@@ -22,24 +24,82 @@ resource "aws_lb" "this" {
     }
   }
 
-  tags = var.tags
+  tags = merge(
+    { Name = "${var.environment_name}WebAppLb" },
+    var.tags
+  )
+}
+
+resource "aws_lb_target_group" "this" {
+  count = var.create_lb ? length(var.target_groups) : 0
+
+  name        = lookup(var.target_groups[count.index], "name", null)
+  name_prefix = lookup(var.target_groups[count.index], "name_prefix", null)
+
+  vpc_id      = var.vpc_id
+  port        = lookup(var.target_groups[count.index], "backend_port")
+  protocol    = lookup(var.target_groups[count.index], "backend_protocol", null) != null ? upper(lookup(var.target_groups[count.index], "backend_protocol")) : null
+  target_type = lookup(var.target_groups[count.index], "target_type", null)
+
+  deregistration_delay               = lookup(var.target_groups[count.index], "deregistration_delay", null)
+  slow_start                         = lookup(var.target_groups[count.index], "slow_start", null)
+  proxy_protocol_v2                  = lookup(var.target_groups[count.index], "proxy_protocol_v2", null)
+  lambda_multi_value_headers_enabled = lookup(var.target_groups[count.index], "lambda_multi_value_headers_enabled", null)
+
+  dynamic "health_check" {
+    for_each = length(keys(lookup(var.target_groups[count.index], "health_check", {}))) == 0 ? [] : [lookup(var.target_groups[count.index], "health_check", {})]
+
+    content {
+      enabled             = lookup(health_check.value, "enabled", null)
+      interval            = lookup(health_check.value, "interval", null)
+      path                = lookup(health_check.value, "path", null)
+      port                = lookup(health_check.value, "port", null)
+      healthy_threshold   = lookup(health_check.value, "healthy_threshold", null)
+      unhealthy_threshold = lookup(health_check.value, "unhealthy_threshold", null)
+      timeout             = lookup(health_check.value, "timeout", null)
+      protocol            = lookup(health_check.value, "protocol", null)
+      matcher             = lookup(health_check.value, "matcher", null)
+    }
+  }
+
+  dynamic "stickiness" {
+    for_each = length(keys(lookup(var.target_groups[count.index], "stickiness", {}))) == 0 ? [] : [lookup(var.target_groups[count.index], "stickiness", {})]
+
+    content {
+      enabled         = lookup(stickiness.value, "enabled", null)
+      cookie_duration = lookup(stickiness.value, "cookie_duration", null)
+      type            = lookup(stickiness.value, "type", null)
+    }
+  }
+
+  tags = merge(
+    { Name = "${var.environment_name}WebAppTargetGroup" },
+    var.tags
+  )
+
+  depends_on = [aws_lb.this]
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_lb_listener" "this" {
-  count = var.create_lb ? length(var.http_tcp_listeners) : 0
+  count = var.create_lb ? length(var.listeners) : 0
 
   load_balancer_arn = aws_lb.this[0].arn
 
-  port     = var.http_tcp_listeners[count.index]["port"]
-  protocol = var.http_tcp_listeners[count.index]["protocol"]
+  port     = var.listeners[count.index]["port"]
+  protocol = var.listeners[count.index]["protocol"]
 
   dynamic "default_action" {
-    for_each = length(keys(var.http_tcp_listeners[count.index])) == 0 ? [] : [var.http_tcp_listeners[count.index]]
+    for_each = length(keys(var.listeners[count.index])) == 0 ? [] : [var.listeners[count.index]]
 
     # Defaults to forward action if action_type not specified
     content {
-      type             = lookup(default_action.value, "action_type", "forward")
-      target_group_arn = contains([null, "", "forward"], lookup(default_action.value, "action_type", "")) ? aws_lb_target_group.main[lookup(default_action.value, "target_group_index", count.index)].id : null
+      type = lookup(default_action.value, "action_type", "forward")
+      target_group_arn = (contains([null, "", "forward"], lookup(default_action.value, "action_type", ""))
+      ? aws_lb_target_group.this[count.index].id : null)
 
       dynamic "redirect" {
         for_each = length(keys(lookup(default_action.value, "redirect", {}))) == 0 ? [] : [lookup(default_action.value, "redirect", {})]

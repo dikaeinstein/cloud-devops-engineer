@@ -1,6 +1,6 @@
 output "vpc_id" {
   description = "The VPC ID."
-  value       = aws_vpc.this
+  value       = aws_vpc.this.id
 }
 
 output "public_route_tables" {
