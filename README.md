@@ -1,6 +1,6 @@
 # cloud-devops-engineer
 
-Contains projects for my Cloud Devops Engineer Nanodegree implemented with terraform.
+Contains projects for my Cloud Devops Engineer Nanodegree implemented with terraform. You can find my CloudFormation implementation for all the projects [here](https://github.com/dikaeinstein/cloud-devops-engineer-cloudformation)
 
 [![Build Status](https://travis-ci.com/dikaeinstein/cloud-devops-engineer.svg?branch=master)](https://travis-ci.com/dikaeinstein/cloud-devops-engineer)
 
