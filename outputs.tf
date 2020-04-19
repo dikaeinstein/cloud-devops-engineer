@@ -29,3 +29,11 @@
 # output "udagram_bastion_public_dns" {
 #   value = module.udagram.bastion_public_dns
 # }
+
+output "jenkins_public_ips" {
+  value = module.jenkins.node_public_ips
+}
+
+output "jenkins_public_dns" {
+  value = module.jenkins.node_public_dns
+}

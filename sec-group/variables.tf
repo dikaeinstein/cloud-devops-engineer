@@ -3,6 +3,12 @@ variable "vpc_id" {
   type        = string
 }
 
+variable "name" {
+  description = "The name of the security group. If omitted, Terraform will assign a random, unique name."
+  type        = string
+  default     = null
+}
+
 variable "description" {
   description = "The security group description."
   type        = string
