@@ -14,14 +14,17 @@ resource "aws_s3_bucket" "this" {
     }
   }
 
-  tags = {
-    Name = var.tag_name
-  }
+  tags = merge(
+    {
+      Name = var.tag_name
+    },
+    var.tags
+  )
 }
 
 resource "aws_s3_bucket_policy" "this" {
   depends_on = [aws_s3_bucket.this]
   bucket     = var.bucket_name
 
-  policy = templatefile(var.policy_path, {})
+  policy = templatefile(var.policy_path, var.policy_vars)
 }

@@ -10,13 +10,13 @@ module "sec_group" {
       from_port   = 8080
       to_port     = 8080
       protocol    = "tcp"
-      cidr_blocks = ["105.112.176.219/32"]
+      cidr_blocks = ["105.112.153.73/32"]
     },
     {
       from_port   = 22
       to_port     = 22
       protocol    = "tcp"
-      cidr_blocks = ["105.112.176.219/32"]
+      cidr_blocks = ["105.112.153.73/32"]
     },
   ]
 
@@ -44,15 +44,12 @@ module "node" {
   key_name               = "JenkinsNodesKey"
   subnet_ids             = ["subnet-0373cef70584e126f"]
   vpc_security_group_ids = [module.sec_group.id]
-  user_data = templatefile(
-    "${path.module}/templates/bootstrap.tpl",
-    { jenkins_version = "2.231" },
-  )
+  user_data              = file("${path.module}/bootstrap.sh")
 
   ebs_block_device = [
     {
       device_name = "/dev/sdk"
-      volume_size = 10
+      volume_size = 20
     }
   ]
 
@@ -61,3 +58,17 @@ module "node" {
     Scope = "UdacityCloudDevopsEngineerNanodegree"
   }
 }
+
+# module "static_pipeline" {
+#   source = "../s3"
+
+#   acl         = "public-read"
+#   bucket_name = "dika-static-jenkins-pipeline"
+#   policy_path = "${path.module}/roles/static-pipeline.json"
+#   tag_name    = "JenkinsStaticPipeline"
+#   tags        = { Scope = "UdacityCloudDevopsEngineerNanodegree" }
+
+#   website = {
+#     index_document = "index.html"
+#   }
+# }

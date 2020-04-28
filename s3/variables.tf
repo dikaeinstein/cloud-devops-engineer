@@ -8,6 +8,12 @@ variable "policy_path" {
   type        = string
 }
 
+variable "policy_vars" {
+  description = "The template vars for the policy file."
+  type        = map(string)
+  default     = {}
+}
+
 variable "acl" {
   description = "The canned ACL to apply."
   type        = string
@@ -23,6 +29,12 @@ variable "force_destroy" {
 variable "tag_name" {
   description = "The tag name of the s3 bucket."
   type        = string
+}
+
+variable "tags" {
+  description = "A mapping of tags to assign to the bucket."
+  type        = map(string)
+  default     = {}
 }
 
 variable "website" {
