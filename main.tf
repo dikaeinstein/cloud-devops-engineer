@@ -14,6 +14,10 @@ module "s3_state_backend" {
 #   source = "./udagram"
 # }
 
-module "jenkins" {
-  source = "./jenkins"
-}
+# module "jenkins" {
+#   source = "./jenkins"
+# }
+
+# module "code_server" {
+#   source = "./code-server"
+# }

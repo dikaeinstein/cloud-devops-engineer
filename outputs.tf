@@ -30,10 +30,22 @@
 #   value = module.udagram.bastion_public_dns
 # }
 
-output "jenkins_public_ips" {
-  value = module.jenkins.node_public_ips
-}
+# output "jenkins_public_ips" {
+#   value = module.jenkins.node_public_ips
+# }
 
-output "jenkins_public_dns" {
-  value = module.jenkins.node_public_dns
-}
+# output "jenkins_public_dns" {
+#   value = module.jenkins.node_public_dns
+# }
+
+# output "jenkins_static_pipeline_bucket" {
+#   value = module.jenkins.static_pipeline_domain_nane
+# }
+
+# output "code_server_public_ip" {
+#   value = module.code_server.public_ip
+# }
+
+# output "code_server_public_dns" {
+#   value = module.code_server.public_dns
+# }
