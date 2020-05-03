@@ -21,3 +21,7 @@ module "s3_state_backend" {
 # module "code_server" {
 #   source = "./code-server"
 # }
+
+# module "monitoring" {
+#   source = "./montoring"
+# }

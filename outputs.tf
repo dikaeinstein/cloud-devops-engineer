@@ -49,3 +49,11 @@
 # output "code_server_public_dns" {
 #   value = module.code_server.public_dns
 # }
+
+# output "monitoring_public_ip" {
+#   value = module.monitoring.public_ip
+# }
+
+# output "monitoring_public_dns" {
+#   value = module.monitoring.public_dns
+# }
