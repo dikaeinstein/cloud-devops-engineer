@@ -39,7 +39,11 @@
 # }
 
 # output "jenkins_static_pipeline_bucket" {
-#   value = module.jenkins.static_pipeline_domain_nane
+#   value = module.jenkins.static_pipeline_domain_name
+# }
+
+# output "jenkins_static_website_domain_name" {
+#   value = module.jenkins.static_website_domain_name
 # }
 
 # output "code_server_public_ip" {

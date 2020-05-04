@@ -7,16 +7,18 @@ module "sec_group" {
 
   ingress_rules = [
     {
+      description = "Allow access to Jenkins"
       from_port   = 8080
       to_port     = 8080
       protocol    = "tcp"
-      cidr_blocks = ["105.112.153.73/32"]
+      cidr_blocks = ["0.0.0.0/0"]
     },
     {
+      description = "Allow SSH access"
       from_port   = 22
       to_port     = 22
       protocol    = "tcp"
-      cidr_blocks = ["105.112.153.73/32"]
+      cidr_blocks = ["105.112.45.78/32"]
     },
   ]
 
@@ -41,7 +43,7 @@ module "node" {
   ami                    = "ami-0ed2df11a6d41ea78"
   instance_type          = "t2.micro"
   instance_count         = 1
-  key_name               = "JenkinsNodesKey"
+  key_name               = "pipeline"
   subnet_ids             = ["subnet-0373cef70584e126f"]
   vpc_security_group_ids = [module.sec_group.id]
   user_data              = file("${path.module}/bootstrap.sh")
@@ -59,16 +61,16 @@ module "node" {
   }
 }
 
-# module "static_pipeline" {
-#   source = "../s3"
+module "static_pipeline" {
+  source = "../s3"
 
-#   acl         = "public-read"
-#   bucket_name = "dika-static-jenkins-pipeline"
-#   policy_path = "${path.module}/roles/static-pipeline.json"
-#   tag_name    = "JenkinsStaticPipeline"
-#   tags        = { Scope = "UdacityCloudDevopsEngineerNanodegree" }
+  acl         = "public-read"
+  bucket_name = "dika-static-jenkins-pipeline"
+  policy_path = "${path.module}/policies/static-pipeline.json"
+  tag_name    = "JenkinsStaticPipeline"
+  tags        = { Scope = "UdacityCloudDevopsEngineerNanodegree" }
 
-#   website = {
-#     index_document = "index.html"
-#   }
-# }
+  website = {
+    index_document = "index.html"
+  }
+}
