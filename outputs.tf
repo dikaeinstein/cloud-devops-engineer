@@ -38,6 +38,14 @@
 #   value = module.jenkins.node_public_dns
 # }
 
+# output "cdn_capstone_ecr_repository_url" {
+#   value = module.cdn_capstone_ecr.repository_url
+# }
+
+# output "cdn_capstone_ecr_arn" {
+#   value = module.cdn_capstone_ecr.arn
+# }
+
 # output "jenkins_static_pipeline_bucket" {
 #   value = module.jenkins.static_pipeline_domain_name
 # }

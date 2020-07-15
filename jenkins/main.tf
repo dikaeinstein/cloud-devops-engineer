@@ -18,7 +18,7 @@ module "sec_group" {
       from_port   = 22
       to_port     = 22
       protocol    = "tcp"
-      cidr_blocks = ["105.112.45.78/32"]
+      cidr_blocks = ["0.0.0.0/0"]
     },
   ]
 
@@ -38,10 +38,9 @@ module "sec_group" {
 }
 
 module "node" {
-  source = "../ec2"
-
-  ami                    = "ami-0ed2df11a6d41ea78"
-  instance_type          = "t2.micro"
+  source                 = "../ec2"
+  ami                    = "ami-0917237b4e71c5759" # Ubuntu 20.04 LTS
+  instance_type          = "t2.medium"
   instance_count         = 1
   key_name               = "pipeline"
   subnet_ids             = ["subnet-0373cef70584e126f"]
@@ -51,7 +50,7 @@ module "node" {
   ebs_block_device = [
     {
       device_name = "/dev/sdk"
-      volume_size = 20
+      volume_size = 40
     }
   ]
 
@@ -61,16 +60,16 @@ module "node" {
   }
 }
 
-module "static_pipeline" {
-  source = "../s3"
+# module "static_pipeline" {
+#   source = "../s3"
 
-  acl         = "public-read"
-  bucket_name = "dika-static-jenkins-pipeline"
-  policy_path = "${path.module}/policies/static-pipeline.json"
-  tag_name    = "JenkinsStaticPipeline"
-  tags        = { Scope = "UdacityCloudDevopsEngineerNanodegree" }
+#   acl         = "public-read"
+#   bucket_name = "dika-static-jenkins-pipeline"
+#   policy_path = "${path.module}/policies/static-pipeline.json"
+#   tag_name    = "JenkinsStaticPipeline"
+#   tags        = { Scope = "UdacityCloudDevopsEngineerNanodegree" }
 
-  website = {
-    index_document = "index.html"
-  }
-}
+#   website = {
+#     index_document = "index.html"
+#   }
+# }

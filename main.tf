@@ -18,6 +18,13 @@ module "s3_state_backend" {
 #   source = "./jenkins"
 # }
 
+# module "cdn_capstone_ecr" {
+#   source = "./ecr"
+
+#   name                 = "cloud-devops-nanodegree-capstone"
+#   image_tag_mutability = "IMMUTABLE"
+# }
+
 # module "code_server" {
 #   source = "./code-server"
 # }
